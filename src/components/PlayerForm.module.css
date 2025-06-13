@@ -1,0 +1,317 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+
+.form {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+  padding: 0px 32px 32px 32px;
+  max-width: 900px;
+  margin: 32px auto;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  color: #000;
+  width: 100%;
+}
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.topFields {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.leftFields,
+.rightFields {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.rightFields {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: stretch;
+}
+.inputGroup {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: none;
+  border-radius: 0;
+  padding: 0;
+}
+.inputGroup :global(svg) {
+  position: absolute;
+  left: 12px;
+  color: #adadad;
+  pointer-events: none;
+}
+.input {
+  border: 2px solid #adadad;
+  border-radius: 8px;
+  padding: 8px 12px 8px 36px;
+  font-size: 1rem;
+  background: none;
+  outline: none;
+  color: #000;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  width: 100%;
+}
+.input::placeholder {
+  color: #adadad;
+  opacity: 1;
+}
+.sections {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.section {
+  flex: 1;
+  border-radius: 12px;
+  padding: 8px 20px;
+  text-align: left;
+  background: none;
+}
+.statsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+}
+.slidersSection {
+  border: 2px solid #6385db;
+  border-radius: 8px;
+  background: none;
+  padding: 8px 20px 16px 20px;
+  text-align: left;
+  overflow: hidden;
+}
+.slidersGrid {
+  display: grid;
+  grid-template-columns: 2fr 2fr;
+  gap: 12px 16px;
+  margin-top: 8px;
+  width: 100%;
+}
+.sliderGroup {
+  background: #f8f8f8;
+  border-radius: 8px;
+  padding: 12px 20px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+.sliderGroup:last-child {
+  margin-bottom: 0;
+}
+.sliderLabelRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.98rem;
+  margin-bottom: 4px;
+}
+.sliderLabelRow span {
+  font-size: 8px;
+  /* color: #adadad; */
+  font-weight: 400;
+}
+.slider {
+  accent-color: #6385db;
+  border-radius: 8px;
+  height: 4px;
+  width: 100%;
+  background: #e0e0e0;
+}
+
+.playerStatsSection {
+  border: 2px solid #6385db;
+  border-radius: 8px;
+  padding: 8px 20px;
+  background: none;
+  margin-bottom: 0;
+  text-align: left;
+  flex: 1;
+  min-width: 0;
+}
+.playerStatItem,
+.playerLikeItem {
+  background: #f8f8f8;
+  border-radius: 8px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.playerStatItem:last-child,
+.playerLikeItem:last-child {
+  margin-bottom: 0;
+}
+.iconBox {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+.statLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  padding: 2px 20px 2px 4px;
+}
+.statSelect {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: #000;
+  cursor: pointer;
+  appearance: none;
+  padding: 2px 20px 2px 4px;
+  border-radius: 4px;
+  margin-left: auto;
+}
+.statSelect:focus {
+  outline: 1.5px solid #6385db;
+}
+.playerLikesSection {
+  border: 2px solid #6385db;
+  border-radius: 8px;
+  padding: 8px 20px;
+  text-align: left;
+  background: none;
+  flex: 1;
+  min-width: 0;
+}
+.likesReorderGroup {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  margin: 0;
+}
+:global(.framer-reorder-item) {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+.saveBtn {
+  margin-top: 32px;
+  display: block;
+  width: 100%;
+  background: #6385db;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 16px;
+  font-size: 1.1rem;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-weight: 600;
+}
+@media print {
+  .saveBtn {
+    display: none !important;
+  }
+}
+.saveBtn:hover {
+  background: #4a6ac7;
+}
+
+.print-mode .saveBtn {
+  display: none !important;
+}
+.print-mode .inputGroup svg {
+  display: none !important;
+  position: absolute !important;
+  left: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+.print-mode .input {
+  padding-left: 12px !important;
+}
+
+[data-print-mode] [data-print-hide] {
+  display: none !important;
+}
+
+[data-print-mode] .inputGroup svg {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  position: absolute !important;
+  left: 0 !important;
+}
+[data-print-mode] .input {
+  padding-left: 12px !important;
+}
+
+.textarea {
+  /* min-height: 1%; */
+  height: 100%;
+  align-items: flex-start;
+  display: flex;
+  resize: vertical;
+  padding: 12px 12px 12px 36px;
+  font-size: 1rem;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  border-radius: 8px;
+  border: 2px solid #adadad;
+  box-sizing: border-box;
+}
+
+.inputGroup.textareaGroup {
+  align-items: flex-start;
+}
+.inputGroup.textareaGroup svg {
+  top: 15px;
+  align-self: flex-start;
+  position: absolute;
+  left: 12px;
+}
+
+@media (max-width: 800px) {
+  .form {
+    margin: 0;
+  }
+  .title {
+    font-size: 0rem;
+  }
+  .playerStatsSection,
+  .playerLikesSection,
+  .slidersSection {
+    padding: 8px 10px;
+  }
+  .slidersGrid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .sliderGroup {
+    padding: 12px 10px;
+  }
+  .leftFields,
+  .rightFields {
+    gap: 8px;
+  }
+}
