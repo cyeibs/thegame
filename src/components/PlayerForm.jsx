@@ -222,7 +222,8 @@ const PlayerForm = () => {
           </div>
           <div className={styles.inputGroup}>
             <FontAwesomeIcon icon={faDiceD20} />
-            <input
+            <textarea
+              rows={1}
               className={styles.input}
               placeholder="Сколько раз играл в НРИ:"
               value={formData.nri_experience}
