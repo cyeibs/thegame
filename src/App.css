@@ -23,6 +23,10 @@ body {
   .content h1 {
     font-size: 1.5rem;
   }
+
+  body {
+    background-image: none;
+  }
 }
 
 .content p {

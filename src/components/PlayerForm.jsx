@@ -32,6 +32,7 @@ import {
 import { Reorder, useMotionValue, animate } from "framer-motion";
 import { motion } from "framer-motion";
 import html2pdf from "html2pdf.js";
+import { supabase } from "../supabase";
 
 const initialLikes = [
   { key: "setting", icon: faFeatherAlt, label: "Мир и сеттинг" },
@@ -109,38 +110,53 @@ const PlayerForm = () => {
   });
   const [isTooNarrow, setIsTooNarrow] = useState(false);
   const formRef = useRef(null);
+  const [formData, setFormData] = useState({
+    name: "",
+    nri_experience: "",
+    try_mechanics: "",
+    ready_to_die: "",
+    forbidden_topics: "",
+    stat_knowledge: 0,
+    stat_charisma: 0,
+    stat_discipline: 0,
+    stat_creativity: 0,
+    stat_curiosity: 0,
+    stat_strangeness: 0,
+    stat_empathy: 0,
+    stat_humor: 0,
+  });
 
-  useEffect(() => {
-    function handleResize() {
-      setIsTooNarrow(window.innerWidth < 620);
-    }
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  // useEffect(() => {
+  //   function handleResize() {
+  //     setIsTooNarrow(window.innerWidth < 620);
+  //   }
+  //   handleResize();
+  //   window.addEventListener("resize", handleResize);
+  //   return () => window.removeEventListener("resize", handleResize);
+  // }, []);
 
-  if (isTooNarrow) {
-    return (
-      <div
-        style={{
-          maxWidth: 400,
-          margin: "40px auto",
-          padding: "32px 16px",
-          background: "#fff",
-          borderRadius: 16,
-          boxShadow: "0 2px 16px rgba(0,0,0,0.07)",
-          textAlign: "center",
-          fontFamily: "Inter, Segoe UI, sans-serif",
-          color: "#000",
-          fontSize: 18,
-          lineHeight: 1.5,
-        }}
-      >
-        Пожалуйста, перейдите на десктоп или переверните экран телефона для
-        корректного заполнения и сохранения PDF.
-      </div>
-    );
-  }
+  // if (isTooNarrow) {
+  //   return (
+  //     <div
+  //       style={{
+  //         maxWidth: 400,
+  //         margin: "40px auto",
+  //         padding: "32px 16px",
+  //         background: "#fff",
+  //         borderRadius: 16,
+  //         boxShadow: "0 2px 16px rgba(0,0,0,0.07)",
+  //         textAlign: "center",
+  //         fontFamily: "Inter, Segoe UI, sans-serif",
+  //         color: "#000",
+  //         fontSize: 18,
+  //         lineHeight: 1.5,
+  //       }}
+  //     >
+  //       Пожалуйста, перейдите на десктоп или переверните экран телефона для
+  //       корректного заполнения и сохранения PDF.
+  //     </div>
+  //   );
+  // }
 
   const handleSavePdf = (e) => {
     e.preventDefault();
@@ -163,6 +179,24 @@ const PlayerForm = () => {
     }, 100);
   };
 
+  const handleSaveToSupabase = async () => {
+    const data = {
+      ...formData,
+      likes_order: JSON.stringify(likes.map((l) => l.label)),
+      slider_plan: sliders.plan,
+      slider_jokes: sliders.jokes,
+      slider_team: sliders.team,
+      slider_rules: sliders.rules,
+      slider_dark: sliders.dark,
+    };
+    const { error } = await supabase.from("dnd").insert([data]);
+    if (error) {
+      alert("Ошибка при сохранении: " + error.message);
+    } else {
+      alert("Сохранено!");
+    }
+  };
+
   return (
     <form
       ref={formRef}
@@ -177,21 +211,35 @@ const PlayerForm = () => {
         <div className={styles.leftFields}>
           <div className={styles.inputGroup}>
             <FontAwesomeIcon icon={faUser} />
-            <input className={styles.input} placeholder="Твое имя:" />
+            <input
+              className={styles.input}
+              placeholder="Твое имя:"
+              value={formData.name}
+              onChange={(e) =>
+                setFormData((f) => ({ ...f, name: e.target.value }))
+              }
+            />
           </div>
           <div className={styles.inputGroup}>
             <FontAwesomeIcon icon={faDiceD20} />
             <input
               className={styles.input}
               placeholder="Сколько раз играл в НРИ:"
+              value={formData.nri_experience}
+              onChange={(e) =>
+                setFormData((f) => ({ ...f, nri_experience: e.target.value }))
+              }
             />
           </div>
-          <div className={styles.inputGroup}>
+          <div className={styles.inputGroup + " " + styles.textareaGroup}>
             <FontAwesomeIcon icon={faFlask} />
-            <input
+            <textarea
               className={styles.input}
-              maxLength={40}
               placeholder="Хочу попробовать (механики/системы):"
+              value={formData.try_mechanics}
+              onChange={(e) =>
+                setFormData((f) => ({ ...f, try_mechanics: e.target.value }))
+              }
             />
           </div>
         </div>
@@ -201,6 +249,10 @@ const PlayerForm = () => {
             <input
               className={styles.input}
               placeholder="Готов к смерти  персонажа (да/нет):"
+              value={formData.ready_to_die}
+              onChange={(e) =>
+                setFormData((f) => ({ ...f, ready_to_die: e.target.value }))
+              }
             />
           </div>
           <div className={styles.inputGroup + " " + styles.textareaGroup}>
@@ -208,7 +260,11 @@ const PlayerForm = () => {
             <textarea
               className={styles.input + " " + styles.textarea}
               placeholder="Запретные темы:"
-              rows={3}
+              rows={4}
+              value={formData.forbidden_topics}
+              onChange={(e) =>
+                setFormData((f) => ({ ...f, forbidden_topics: e.target.value }))
+              }
             />
           </div>
         </div>
@@ -225,7 +281,13 @@ const PlayerForm = () => {
               </div>
               Знания:
             </div>
-            <select className={styles.statSelect}>
+            <select
+              className={styles.statSelect}
+              value={formData.stat_knowledge}
+              onChange={(e) =>
+                setFormData((f) => ({ ...f, stat_knowledge: +e.target.value }))
+              }
+            >
               {[0, 1, 2, 3, 4, 5].map((n) => (
                 <option key={n} value={n}>
                   {n}
@@ -240,7 +302,13 @@ const PlayerForm = () => {
               </div>
               Харизма:
             </div>
-            <select className={styles.statSelect}>
+            <select
+              className={styles.statSelect}
+              value={formData.stat_charisma}
+              onChange={(e) =>
+                setFormData((f) => ({ ...f, stat_charisma: +e.target.value }))
+              }
+            >
               {[0, 1, 2, 3, 4, 5].map((n) => (
                 <option key={n} value={n}>
                   {n}
@@ -255,7 +323,13 @@ const PlayerForm = () => {
               </div>
               Дисциплина:
             </div>
-            <select className={styles.statSelect}>
+            <select
+              className={styles.statSelect}
+              value={formData.stat_discipline}
+              onChange={(e) =>
+                setFormData((f) => ({ ...f, stat_discipline: +e.target.value }))
+              }
+            >
               {[0, 1, 2, 3, 4, 5].map((n) => (
                 <option key={n} value={n}>
                   {n}
@@ -270,7 +344,13 @@ const PlayerForm = () => {
               </div>
               Креативность:
             </div>
-            <select className={styles.statSelect}>
+            <select
+              className={styles.statSelect}
+              value={formData.stat_creativity}
+              onChange={(e) =>
+                setFormData((f) => ({ ...f, stat_creativity: +e.target.value }))
+              }
+            >
               {[0, 1, 2, 3, 4, 5].map((n) => (
                 <option key={n} value={n}>
                   {n}
@@ -285,7 +365,13 @@ const PlayerForm = () => {
               </div>
               Любопытство:
             </div>
-            <select className={styles.statSelect}>
+            <select
+              className={styles.statSelect}
+              value={formData.stat_curiosity}
+              onChange={(e) =>
+                setFormData((f) => ({ ...f, stat_curiosity: +e.target.value }))
+              }
+            >
               {[0, 1, 2, 3, 4, 5].map((n) => (
                 <option key={n} value={n}>
                   {n}
@@ -300,7 +386,16 @@ const PlayerForm = () => {
               </div>
               Странность:
             </div>
-            <select className={styles.statSelect}>
+            <select
+              className={styles.statSelect}
+              value={formData.stat_strangeness}
+              onChange={(e) =>
+                setFormData((f) => ({
+                  ...f,
+                  stat_strangeness: +e.target.value,
+                }))
+              }
+            >
               {[0, 1, 2, 3, 4, 5].map((n) => (
                 <option key={n} value={n}>
                   {n}
@@ -315,7 +410,13 @@ const PlayerForm = () => {
               </div>
               Эмпатия:
             </div>
-            <select className={styles.statSelect}>
+            <select
+              className={styles.statSelect}
+              value={formData.stat_empathy}
+              onChange={(e) =>
+                setFormData((f) => ({ ...f, stat_empathy: +e.target.value }))
+              }
+            >
               {[0, 1, 2, 3, 4, 5].map((n) => (
                 <option key={n} value={n}>
                   {n}
@@ -330,7 +431,13 @@ const PlayerForm = () => {
               </div>
               Юмор:
             </div>
-            <select className={styles.statSelect}>
+            <select
+              className={styles.statSelect}
+              value={formData.stat_humor}
+              onChange={(e) =>
+                setFormData((f) => ({ ...f, stat_humor: +e.target.value }))
+              }
+            >
               {[0, 1, 2, 3, 4, 5].map((n) => (
                 <option key={n} value={n}>
                   {n}
@@ -396,13 +503,20 @@ const PlayerForm = () => {
           ))}
         </div>
       </div>
-      <button
+      {/* <button
         type="button"
         className={styles.saveBtn}
         data-print-hide
         onClick={handleSavePdf}
       >
         Сохранить в PDF
+      </button> */}
+      <button
+        type="button"
+        className={styles.saveBtn}
+        onClick={handleSaveToSupabase}
+      >
+        Сохранить
       </button>
     </form>
   );
